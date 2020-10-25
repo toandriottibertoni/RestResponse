@@ -3,12 +3,13 @@ namespace RestResponse.Enums
 
     public enum StatusCode
     {     
-        _100Continue = 100,
-        _101SwitchingProtocol = 101,
-        _102Processing = 102,
-        _103EarlyHints = 103,
-        _200OK = 200,
-        _201Created = 201,
-        _404NotFound = 404
+        Continue100 = 100,
+        SwitchingProtocol101 = 101,
+        Processing102 = 102,
+        EarlyHints103 = 103,
+        Ok200 = 200,
+        Created201 = 201,
+        NotFound404 = 404,
+        InternalError500 = 500
     }
 }

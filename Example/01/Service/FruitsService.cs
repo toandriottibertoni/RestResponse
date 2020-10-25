@@ -6,6 +6,7 @@ namespace _01.Service
     public class Fruit
     {
         public string name {get; set;}
+        public int id {get; set;}
     }
 
     public class FruitsService
@@ -14,10 +15,10 @@ namespace _01.Service
         private List<Fruit> fruitsList { get; set; } = new List<Fruit>();
         public FruitsService()
         {
-            fruitsList.Add(new Fruit{ name = "Apple"});
-            fruitsList.Add(new Fruit{ name = "Orange"});
-            fruitsList.Add(new Fruit{ name = "Pineapple"});
-            fruitsList.Add(new Fruit{ name = "Lemon"});
+            fruitsList.Add(new Fruit{ name = "Apple", id = 1});
+            fruitsList.Add(new Fruit{ name = "Orange", id = 2});
+            fruitsList.Add(new Fruit{ name = "Pineapple", id = 3});
+            fruitsList.Add(new Fruit{ name = "Lemon", id = 4});
         }
 
         public List<Fruit> Filter(string fruitName)
@@ -25,17 +26,26 @@ namespace _01.Service
             return fruitsList.Where(p => p.name.Contains(fruitName)).ToList();
         }
 
-        public RestStatusResponse FilterWithResponse(string fruitName)
+        public RestStatusResponse<List<Fruit>> FilterWithResponse(string fruitName)
         {
             List<Fruit> fruitList = new List<Fruit>();
             fruitList = this.fruitsList.Where(p => p.name.Contains(fruitName)).ToList();
             if(fruitList.Count > 0)
-                return restDataResponse.OK_200(fruitList);
+                return restDataResponse.Ok200<List<Fruit>>(fruitList);
             else if(fruitList.Count == 0)
-                return restDataResponse.NotFound_404();
+                return restDataResponse.NotFound404<List<Fruit>>(null);
             return null;
         }
 
+        public RestStatusResponse<List<Fruit>> FilterWithResponseList(string fruitName)
+        {
+            return restDataResponse.RestStatusWithList<Fruit>(this.fruitsList.Where(p => p.name.Contains(fruitName)).ToList());
+        }
+
+        public RestStatusResponse<Fruit> FilterWithResponseObject(int id)
+        {
+            return restDataResponse.RestStatusWithObject<Fruit>(this.fruitsList.Where(p => p.id == id).FirstOrDefault<Fruit>());
+        }
         
     }
 }
